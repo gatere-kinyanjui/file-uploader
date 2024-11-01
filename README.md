@@ -1,6 +1,6 @@
 # NOTES
 
-## Design System
+## DESIGN SYSTEM
 
 #### Performance/Querying
 
@@ -65,3 +65,16 @@ _Consider using schemas if:_
 - You want to separate system tables from user data
 - You plan to have multiple versions or environments of your app in the same database
 - You want to group related tables together (e.g., all tables related to file management in one schema, user management in another)
+
+## AUTH
+
+- Rather than use Prisma for auth, set up session-based authentication using Passport.js & Prisma session store library
+
+Additional security recommendations:
+
+- Add rate limiting for login attempts
+- Implement CSRF protection
+- Use secure sessions with Redis or similar
+- Add password complexity requirements
+- Implement account lockout after failed attempts
+- Add 2FA support

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authentication</title>
+
+    <style>
+      .form-container {
+        max-width: 400px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+      input {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .toggle-form {
+        margin-top: 1rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <!-- Login Form -->
+      <form id="loginForm" action="/auth/login" method="POST">
+        <h2>Login</h2>
+        <div class="form-group">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" name="password" required />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form
+        id="signupForm"
+        action="/auth/sign-up"
+        method="POST"
+        style="display: none"
+      >
+        <h2>Sign Up</h2>
+        <div class="form-group">
+          <label for="signupName">Name</label>
+          <input type="text" id="signupName" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="signupEmail">Email</label>
+          <input type="email" id="signupEmail" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" name="password" required />
+        </div>
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <div class="toggle-form">
+        <button type="button" onclick="toggleForms()">
+          Switch to <span id="toggleText">Sign Up</span>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      function toggleForms() {
+        const loginForm = document.getElementById("loginForm");
+        const signupForm = document.getElementById("signupForm");
+        const toggleText = document.getElementById("toggleText");
+
+        if (loginForm.style.display === "none") {
+          loginForm.style.display = "block";
+          signupForm.style.display = "none";
+          toggleText.textContent = "Sign Up";
+        } else {
+          loginForm.style.display = "none";
+          signupForm.style.display = "block";
+          toggleText.textContent = "Login";
+        }
+      }
+    </script>
+  </body>
+</html>

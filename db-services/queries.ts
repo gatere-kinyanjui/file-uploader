@@ -6,11 +6,9 @@ export async function AllUsers() {
   try {
     const allUsers = await prisma.user.findMany();
     if (allUsers) {
-      console.log(allUsers);
     } else {
       console.log("No users were found.");
     }
-
     return allUsers;
   } catch (err: any) {
     console.error("Smh...trouble reading users", err);
@@ -22,29 +20,29 @@ export async function AddUser(email: string, name: string, password: string) {
   try {
     const newUser = await prisma.user.create({
       data: {
-        email,
-        name,
-        password,
+        email: email,
+        name: name,
+        password: password,
       },
     });
+
     return newUser;
   } catch (err: any) {
-    console.error("Trouble creating new user!", err);
+    console.error("Trouble adding new user!", err);
   }
 }
 
-export async function testCreateUser(
-  email: string,
-  name: string,
-  password: string
-) {
-  const testNewUser = await prisma.user.create({
-    data: {
-      email: "test@prisma.com",
-      name: "test",
-      password: "12345678",
-    },
-  });
+export async function LoginUser(email: string, password: string) {
+  try {
+    const userToLogin = await prisma.user.findUnique({
+      where: {
+        email: email,
+        password: password,
+      },
+    });
 
-  return testNewUser;
+    return userToLogin;
+  } catch (err: any) {
+    console.error("Trouble logging in user: ", err);
+  }
 }
