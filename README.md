@@ -78,3 +78,7 @@ Additional security recommendations:
 - Add password complexity requirements
 - Implement account lockout after failed attempts
 - Add 2FA support
+
+## DEBUGGING NODE
+
+[Official VS Code Doc](https://code.visualstudio.com/docs/nodejs/nodejs-debugging)

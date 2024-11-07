@@ -30,11 +30,11 @@ passport.use(
         });
 
         if (!userLoginResult) {
-          return done(null, false, { message: "Invalid credentials!" });
+          return done(null, null, { message: "Invalid credentials!" });
         }
 
         if (userLoginResult.password !== userLoginPassword) {
-          return done(null, false, { message: "Incorrect password!" });
+          return done(null, null, { message: "Incorrect password!" });
         }
 
         return done(null, userLoginResult);
@@ -48,12 +48,20 @@ passport.use(
 // Serialization for session handling
 passport.serializeUser(
   (user: Express.User, done: (err: any, id?: number) => void) => {
-    done(null, user.id);
+    process.nextTick(() => {
+      console.log("Seriealising from auth.ts");
+      console.log(user);
+
+      done(null, user.id);
+    });
   }
 );
 
 passport.deserializeUser(
-  async (id: number, done: (err: any, user?: Express.User | false) => void) => {
+  async (id: number, done: (err: any, user?: Express.User | null) => void) => {
+    console.log("Deserialising from auth.ts");
+    console.log(id);
+
     try {
       const user = await prisma.user.findUnique({
         where: { id: id },
@@ -67,11 +75,13 @@ passport.deserializeUser(
 
       // Handle the case where user is null
       if (!user) {
-        return done(null, false);
+        throw new Error("User to deserialise from auth.ts not found.");
       }
       done(null, user);
-    } catch (err) {
-      done(err);
+    } catch (err: any) {
+      console.log("Error deserialising from auth.ts: ", err);
+
+      done(err, null);
     }
   }
 );

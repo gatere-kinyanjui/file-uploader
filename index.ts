@@ -3,7 +3,7 @@ import path from "path";
 
 import { userRouter } from "./routes/userRouter";
 import { authRouter } from "./routes/authRouter";
-import passport from "passport";
+import passport, { use } from "passport";
 
 import expressSession from "express-session";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
@@ -47,5 +47,31 @@ app.use(
 );
 
 app.use(passport.session());
+
+// TODO: DEBUGGING SERIALISATION AND SESSIONS
+// passport.serializeUser((user, done) => {
+//   process.nextTick(() => {
+//     console.log("Serialising user");
+//     console.log(user);
+
+//     return done(null, user.id);
+//   });
+// });
+
+// passport.deserializeUser(async (id, done) => {
+//   console.log("deserialisig user");
+//   console.log(id);
+
+//   try {
+//     const deserialisedUser = await PrismaClient.findUnique(id);
+//     if (!deserialisedUser) {
+//       throw new Error("User to deserialised not found!");
+//     }
+//     done(null, deserialisedUser);
+//   } catch (err: any) {
+//     console.log("Error deserialsing: ", err);
+//     done(err, null);
+//   }
+// });
 
 app.listen(5000, () => console.log("Uploader listening on port 5000!"));
