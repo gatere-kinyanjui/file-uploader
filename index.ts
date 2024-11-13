@@ -3,15 +3,13 @@ import path from "path";
 
 import { userRouter } from "./routes/userRouter";
 import { authRouter } from "./routes/authRouter";
-import passport, { use } from "passport";
+import passport from "passport";
 
 import expressSession from "express-session";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
-// import { PrismaClient } from "@prisma/client";
 
-// this export RESOLVES error TS2345: Argument of type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'
-// is not assignable to parameter of type 'IPrisma<"session">'.
-const PrismaClient = require("@prisma/client").PrismaClient; // Add this import
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 const app = express();
 
@@ -23,13 +21,6 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-//routing middleware
-app.use("/", userRouter);
-app.use("/auth", authRouter);
-
-// passport middleware setup ( it is mandatory to put it after session middleware setup)
-app.use(passport.initialize());
-
 app.use(
   expressSession({
     cookie: {
@@ -38,7 +29,7 @@ app.use(
     secret: "a santa at nasa",
     resave: true,
     saveUninitialized: true,
-    store: new PrismaSessionStore(new PrismaClient(), {
+    store: new PrismaSessionStore(prisma, {
       checkPeriod: 2 * 60 * 1000, //ms
       dbRecordIdIsSessionId: true,
       dbRecordIdFunction: undefined,
@@ -46,32 +37,18 @@ app.use(
   })
 );
 
+// passport middleware setup ( it is mandatory to put it after session middleware setup)
+app.use(passport.initialize());
 app.use(passport.session());
 
-// TODO: DEBUGGING SERIALISATION AND SESSIONS
-// passport.serializeUser((user, done) => {
-//   process.nextTick(() => {
-//     console.log("Serialising user");
-//     console.log(user);
-
-//     return done(null, user.id);
-//   });
+// app.use((req, res, next) => {
+//   console.log(req.user);
+//   console.log(req.session);
+//   next();
 // });
 
-// passport.deserializeUser(async (id, done) => {
-//   console.log("deserialisig user");
-//   console.log(id);
-
-//   try {
-//     const deserialisedUser = await PrismaClient.findUnique(id);
-//     if (!deserialisedUser) {
-//       throw new Error("User to deserialised not found!");
-//     }
-//     done(null, deserialisedUser);
-//   } catch (err: any) {
-//     console.log("Error deserialsing: ", err);
-//     done(err, null);
-//   }
-// });
+//routing middleware
+app.use("/", userRouter);
+app.use("/auth", authRouter);
 
 app.listen(5000, () => console.log("Uploader listening on port 5000!"));

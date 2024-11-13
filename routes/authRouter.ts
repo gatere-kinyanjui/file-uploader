@@ -4,6 +4,8 @@ import { Router } from "express";
 import {
   CreateUserPost,
   DisplayLoginForm,
+  LogoutGet,
+  ProtectedRouteGet,
 } from "../controllers/authController";
 import passport from "passport";
 
@@ -14,9 +16,13 @@ authRouter.get("/", DisplayLoginForm);
 authRouter.post("/sign-up", CreateUserPost);
 
 authRouter.post(
-  "auth/login",
+  "/login",
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/auth",
   })
 );
+
+authRouter.get("/protected-route", ProtectedRouteGet);
+
+authRouter.get("/logout", LogoutGet);

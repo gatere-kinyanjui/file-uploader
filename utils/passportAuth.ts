@@ -1,7 +1,9 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
-import { PrismaClient } from "@prisma/client";
+// this export RESOLVES error TS2345: Argument of type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'
+// is not assignable to parameter of type 'IPrisma<"session">'.
+import { PrismaClient } from "@prisma/client"; // Add this import
 
 const prisma = new PrismaClient();
 
@@ -30,11 +32,11 @@ passport.use(
         });
 
         if (!userLoginResult) {
-          return done(null, null, { message: "Invalid credentials!" });
+          return done(null, { message: "Invalid credentials!" });
         }
 
         if (userLoginResult.password !== userLoginPassword) {
-          return done(null, null, { message: "Incorrect password!" });
+          return done(null, { message: "Incorrect password!" });
         }
 
         return done(null, userLoginResult);
@@ -45,48 +47,7 @@ passport.use(
   )
 );
 
-// Serialization for session handling
-passport.serializeUser(
-  (user: Express.User, done: (err: any, id?: number) => void) => {
-    process.nextTick(() => {
-      console.log("Seriealising from auth.ts");
-      console.log(user);
-
-      done(null, user.id);
-    });
-  }
-);
-
-passport.deserializeUser(
-  async (id: number, done: (err: any, user?: Express.User | null) => void) => {
-    console.log("Deserialising from auth.ts");
-    console.log(id);
-
-    try {
-      const user = await prisma.user.findUnique({
-        where: { id: id },
-        select: {
-          id: true,
-          email: true,
-          name: true,
-          // Don't include password in deserialized user
-        },
-      });
-
-      // Handle the case where user is null
-      if (!user) {
-        throw new Error("User to deserialise from auth.ts not found.");
-      }
-      done(null, user);
-    } catch (err: any) {
-      console.log("Error deserialising from auth.ts: ", err);
-
-      done(err, null);
-    }
-  }
-);
-
-// Type declaration for extending Express.User
+// // Type declaration for extending Express.User
 declare global {
   namespace Express {
     interface User {
@@ -96,3 +57,28 @@ declare global {
     }
   }
 }
+
+passport.serializeUser((user: Express.User, done) => {
+  process.nextTick(() => {
+    console.log("Serialising user");
+    console.log(user);
+
+    return done(null, user.id);
+  });
+});
+
+passport.deserializeUser(async (id: string, done) => {
+  console.log("Deserialising user");
+  console.log(id);
+
+  try {
+    const deserialisedUser = await prisma.user.findUnique({ where: { id } });
+    if (!deserialisedUser) {
+      throw new Error("User to deserialised not found!");
+    }
+    done(null, deserialisedUser);
+  } catch (err: any) {
+    console.log("Error deserialising: ", err);
+    done(err, null);
+  }
+});

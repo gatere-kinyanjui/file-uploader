@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(nanoid())
   email    String @unique
   password String
   name     String
 }
 
 model Folder {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(nanoid())
   name       String
   size       BigInt
   uploadTime DateTime @default(now())

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import * as db from "../db-services/queries";
 
-export const UserDashboardGet = (req: Request, res: Response) => {
+export const HomePageGet = (req: Request, res: Response) => {
   res.render("pages/index");
 
   console.log("Live from User Router");
