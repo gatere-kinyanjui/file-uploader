@@ -3,12 +3,17 @@ import path from "path";
 
 import { userRouter } from "./routes/userRouter";
 import { authRouter } from "./routes/authRouter";
+
 import passport from "passport";
 
+import "./utils/passportAuth";
+
 import expressSession from "express-session";
+
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 
 import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
 const app = express();
@@ -41,11 +46,11 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use((req, res, next) => {
-//   console.log(req.user);
-//   console.log(req.session);
-//   next();
-// });
+app.use((req, res, next) => {
+  console.log(req.user);
+  // console.log(req.session);
+  next();
+});
 
 //routing middleware
 app.use("/", userRouter);

@@ -37,7 +37,7 @@ export const ProtectedRouteGet = async (req: Request, res: Response) => {
   }
 };
 
-export const LogoutGet = async (
+export const LogoutDelete = async (
   req: Request,
   res: Response,
   next: NextFunction

@@ -51,7 +51,7 @@ passport.use(
 declare global {
   namespace Express {
     interface User {
-      id: number;
+      id: string;
       email: string;
       name: string;
     }
