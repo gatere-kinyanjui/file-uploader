@@ -25,4 +25,4 @@ authRouter.post(
 
 authRouter.get("/protected-route", ProtectedRouteGet);
 
-authRouter.delete("/logout", LogoutDelete);
+authRouter.post("/logout", LogoutDelete);

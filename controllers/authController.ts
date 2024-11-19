@@ -46,6 +46,9 @@ export const LogoutDelete = async (
     if (err) {
       return next(err);
     }
+
+    console.log(`User logged out successfully!`, req.user);
+
     res.redirect("/auth");
   });
 };

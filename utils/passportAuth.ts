@@ -60,21 +60,19 @@ declare global {
 
 passport.serializeUser((user: Express.User, done) => {
   process.nextTick(() => {
-    console.log("Serialising user");
-    console.log(user);
+    console.log("Serialising user: ", user);
 
     return done(null, user.id);
   });
 });
 
 passport.deserializeUser(async (id: string, done) => {
-  console.log("Deserialising user");
-  console.log(id);
+  console.log("Deserialising user: ", id);
 
   try {
     const deserialisedUser = await prisma.user.findUnique({ where: { id } });
     if (!deserialisedUser) {
-      throw new Error("User to deserialised not found!");
+      throw new Error("User to deserialise not found!");
     }
     done(null, deserialisedUser);
   } catch (err: any) {

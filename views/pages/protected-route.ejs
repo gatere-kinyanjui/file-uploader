@@ -43,8 +43,10 @@
     <div class="dashboard-container">
       <h1>Protected Route</h1>
       <p>Logged in successfully!</p>
-      <a href="/logout">Out</a>
-      <!-- <button type="submit" onclick="location.href='/logout'">Log out</button> -->
+      <!-- <a href="/logout">Out</a> -->
+      <form id="logoutForm" action="/auth/logout" method="post">
+        <button type="submit" class="logout">LOG OUT</button>
+      </form>
     </div>
   </body>
 </html>
