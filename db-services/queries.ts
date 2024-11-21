@@ -25,7 +25,7 @@ export async function AddUser(email: string, name: string, password: string) {
         password: password,
       },
     });
-    console.log(newUser.id);
+    // console.log("[QUERIES]: ", newUser.id);
 
     return newUser;
   } catch (err: any) {

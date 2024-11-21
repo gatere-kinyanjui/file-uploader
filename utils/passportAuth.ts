@@ -5,7 +5,11 @@ import { Strategy as LocalStrategy } from "passport-local";
 // is not assignable to parameter of type 'IPrisma<"session">'.
 import { PrismaClient } from "@prisma/client"; // Add this import
 
+import bcrypt from "bcrypt";
+
 const prisma = new PrismaClient();
+
+const saltRounds = 10;
 
 // Define the done callback type
 type DoneCallback = (
@@ -35,7 +39,12 @@ passport.use(
           return done(null, { message: "Invalid credentials!" });
         }
 
-        if (userLoginResult.password !== userLoginPassword) {
+        const cryptPassword = bcrypt.compareSync(
+          userLoginPassword,
+          userLoginResult.password
+        );
+
+        if (!cryptPassword) {
           return done(null, { message: "Incorrect password!" });
         }
 

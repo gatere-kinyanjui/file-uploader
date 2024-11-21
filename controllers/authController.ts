@@ -2,21 +2,35 @@ import { Request, Response, NextFunction } from "express";
 
 import * as db from "../db-services/queries";
 
+import bcrypt from "bcrypt";
+
 export const DisplayLoginForm = (req: Request, res: Response) => {
   res.render("pages/authentication");
 
   console.log("Live from Auth Router");
 };
 
-export const CreateUserPost = async (req: Request, res: Response) => {
+// hashing password
+
+export const CreateUserPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   // arguments' names consistent with query's names
   const { email, name, password } = req.body;
   console.log("[CONTROLLER] body: ", req.body);
 
-  // creating user
-  const createdUser = await db.AddUser(email, name, password);
+  const saltRounds = 10;
+
+  const salt = bcrypt.genSaltSync(saltRounds);
+  const hash = bcrypt.hashSync(password, salt);
+
+  // Store hash in your password DB.
+  const createdUser = await db.AddUser(email, name, hash);
 
   console.log("[CONTROLLER] created user: ", createdUser);
+
   res.redirect("/auth");
 };
 
