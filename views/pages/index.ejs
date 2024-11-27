@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <title>Home</title>
 
     <style>
@@ -41,13 +47,30 @@
         text-decoration: none;
         color: white;
       }
+      .quattrocento-regular {
+        font-family: "Quattrocento", serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      .quattrocento-bold {
+        font-family: "Quattrocento", serif;
+        font-weight: 700;
+        font-style: normal;
+      }
     </style>
   </head>
   <body>
     <div class="dashboard-container">
-      <h1>FILE UPLOADER</h1>
-      <p>Welcome to the File Uploader.</p>
-      <button type="button" onclick="location.href='/auth'">LOG IN</button>
+      <h1 class="quattrocento-bold">FILE UPLOADER</h1>
+      <p class="quattrocento-regular">Welcome to the File Uploader.</p>
+      <button
+        class="quattrocento-regular"
+        type="button"
+        onclick="location.href='/auth'"
+      >
+        LOG IN
+      </button>
     </div>
   </body>
 </html>
