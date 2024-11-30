@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 export const DisplayLoginForm = (req: Request, res: Response) => {
   res.render("pages/authentication");
 
-  console.log("Live from Auth Router");
+  console.log("Live from Auth Router", req.user);
 };
 
 // hashing password
@@ -43,11 +43,20 @@ export const LoginUserGet = async (req: Request, res: Response) => {
   res.redirect("/auth");
 };
 
-export const ProtectedRouteGet = async (req: Request, res: Response) => {
+export const UploaderGet = async (req: Request, res: Response) => {
   if (req.isAuthenticated()) {
-    res.render("pages/protected-route");
+    res.render("pages/uploader", { user: req.user });
   } else {
     res.render("pages/authentication");
+  }
+};
+
+export const UploaderPost = async (req: Request, res: Response) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    res.status(400).send("No file was selected!");
+  } else {
+    const uploadedFile = req.files.sampleFile;
+    console.log("[CONTROLLER UPLOAD POST]: ", uploadedFile);
   }
 };
 

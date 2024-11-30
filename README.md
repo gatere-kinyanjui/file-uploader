@@ -82,3 +82,20 @@ Additional security recommendations:
 ## DEBUGGING NODE
 
 [Official VS Code Doc](https://code.visualstudio.com/docs/nodejs/nodejs-debugging)
+
+## HACKS
+
+In express, you can set and access various local variables throughout your entire app (even in views) with the locals object.
+We can use this knowledge to write ourselves a custom middleware that will simplify how we access our current user in our views.
+
+Middleware functions are functions that take the req and res objects, manipulate them, and pass them on through the rest of the app.
+
+```javascript
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+```
+
+For instance, if you insert the code above somewhere between where you instantiate the passport middleware and before you render your views,
+you will have access to the currentUser variable in all of your views, and you won’t have to manually pass it into all of the controllers in which you need it.

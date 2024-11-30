@@ -5,7 +5,8 @@ import {
   CreateUserPost,
   DisplayLoginForm,
   LogoutDelete,
-  ProtectedRouteGet,
+  UploaderGet,
+  UploaderPost,
 } from "../controllers/authController";
 import passport from "passport";
 
@@ -18,11 +19,12 @@ authRouter.post("/sign-up", CreateUserPost);
 authRouter.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/auth/protected-route",
+    successRedirect: "/auth/uploader",
     failureRedirect: "/auth",
   })
 );
 
-authRouter.get("/protected-route", ProtectedRouteGet);
+authRouter.get("/uploader", UploaderGet);
+authRouter.post("/uploader", UploaderPost);
 
 authRouter.post("/logout", LogoutDelete);

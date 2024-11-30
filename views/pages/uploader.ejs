@@ -39,6 +39,13 @@
         border-radius: 4px;
         cursor: pointer;
       }
+      .safe-button {
+        background-color: teal;
+      }
+      .warning-button {
+        background-color: rgb(241, 87, 87);
+        color: black;
+      }
       .toggle-form {
         margin-top: 1rem;
         text-align: center;
@@ -54,23 +61,62 @@
         font-weight: 700;
         font-style: normal;
       }
+      .form-spacing {
+        margin-bottom: 1rem;
+      }
     </style>
   </head>
   <body>
+    <%if(locals.user){%>
     <div class="dashboard-container quattrocento-regular">
-      <h1 class="quattrocento-bold">Protected Route</h1>
-      <p>Logged in successfully!</p>
+      <h1 class="quattrocento-bold">Uploader Route</h1>
+
+      <p>
+        Welcome <%=user.name.charAt(0).toUpperCase() + user.name.slice(1) %>,
+        you have logged in successfully!
+      </p>
       <!-- <a href="/logout">Out</a> -->
       <form
-        class="quattrocento-regular"
-        id="logoutForm"
-        action="/auth/logout"
+        class="quattrocento-regular form-spacing"
+        id="uploadForm"
+        action="/auth/uploader"
         method="post"
       >
-        <button type="submit" class="logout quattrocento-regular">
+        <label for="file" class="logout quattrocento-regular"
+          >Upload your file below</label
+        >
+        <input
+          type="file"
+          name="sampleFile"
+          class="logout quattrocento-regular"
+        />
+        <button type="submit" class="logout quattrocento-regular safe-button">
+          Upload
+        </button>
+      </form>
+
+      <form action="/auth/logout" method="post" class="">
+        <button
+          type="submit"
+          class="logout quattrocento-regular warning-button"
+        >
           LOG OUT
         </button>
       </form>
     </div>
+    <%} else{%>
+
+    <div class="dashboard-container">
+      <h3 class="quattrocento-bold">User not found</h3>
+      <p class="quattrocento-regular">Please log in to proceed</p>
+      <button
+        class="quattrocento-regular"
+        type="button"
+        onclick="location.href='/auth'"
+      >
+        Log In Here
+      </button>
+    </div>
+    <%}%>
   </body>
 </html>

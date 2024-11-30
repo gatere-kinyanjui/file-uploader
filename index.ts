@@ -1,18 +1,13 @@
 import express from "express";
 import path from "path";
-
 import { userRouter } from "./routes/userRouter";
 import { authRouter } from "./routes/authRouter";
-
 import passport from "passport";
-
 import "./utils/passportAuth";
-
 import expressSession from "express-session";
-
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
-
 import { PrismaClient } from "@prisma/client";
+import fileUpload from "express-fileupload";
 
 const prisma = new PrismaClient();
 
@@ -46,14 +41,27 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// random testing of m/ware
+// app.use((req, res, next) => {
+//   // console.log(req.user);
+//   console.log(req.session.cookie);
+//   next();
+// });
+
+// setting local variables
+// TODO: conditional check for undefined values
 app.use((req, res, next) => {
-  // console.log(req.user);
-  console.log(req.session.cookie);
+  res.locals.currentUserByName = req.user?.name;
+
+  console.log("[INDEX LOCALS VARIABLE USER]: ", res.locals.currentUserByName);
+
   next();
 });
 
 //routing middleware
 app.use("/", userRouter);
 app.use("/auth", authRouter);
+
+app.use(fileUpload());
 
 app.listen(5000, () => console.log("Uploader listening on port 5000!"));
