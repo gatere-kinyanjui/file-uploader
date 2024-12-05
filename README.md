@@ -99,3 +99,7 @@ app.use((req, res, next) => {
 
 For instance, if you insert the code above somewhere between where you instantiate the passport middleware and before you render your views,
 you will have access to the currentUser variable in all of your views, and you won’t have to manually pass it into all of the controllers in which you need it.
+
+## TYPES/INTERFACES FOR FILE BEING UPLOADED
+- File interface isn't provided by default on the browser
+- 

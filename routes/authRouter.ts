@@ -9,6 +9,7 @@ import {
   UploaderPost,
 } from "../controllers/authController";
 import passport from "passport";
+import fileUpload from "express-fileupload";
 
 export const authRouter: Router = express.Router();
 
@@ -25,6 +26,14 @@ authRouter.post(
 );
 
 authRouter.get("/uploader", UploaderGet);
-authRouter.post("/uploader", UploaderPost);
+authRouter.post(
+  "/uploader",
+  fileUpload({
+    createParentPath: true,
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  }),
+  UploaderPost
+);
 
 authRouter.post("/logout", LogoutDelete);

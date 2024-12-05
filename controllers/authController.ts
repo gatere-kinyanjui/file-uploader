@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import * as db from "../db-services/queries";
 
 import bcrypt from "bcrypt";
+import { IFileUploader } from "./lib/controllerModels";
 
 export const DisplayLoginForm = (req: Request, res: Response) => {
   res.render("pages/authentication");
@@ -51,12 +52,18 @@ export const UploaderGet = async (req: Request, res: Response) => {
   }
 };
 
-export const UploaderPost = async (req: Request, res: Response) => {
+export const UploaderPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     res.status(400).send("No file was selected!");
   } else {
     const uploadedFile = req.files.sampleFile;
     console.log("[CONTROLLER UPLOAD POST]: ", uploadedFile);
+
+    res.json(uploadedFile);
   }
 };
 
