@@ -3,7 +3,6 @@ import { Request, Response, NextFunction } from "express";
 import * as db from "../db-services/queries";
 
 import bcrypt from "bcrypt";
-import { IFileUploader } from "./lib/controllerModels";
 
 export const DisplayLoginForm = (req: Request, res: Response) => {
   res.render("pages/authentication");
@@ -52,7 +51,8 @@ export const UploaderGet = async (req: Request, res: Response) => {
   }
 };
 
-export const UploaderPost = async (
+// handling file upload as usual
+export const UploaderPostBasic = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -64,6 +64,40 @@ export const UploaderPost = async (
     console.log("[CONTROLLER UPLOAD POST]: ", uploadedFile);
 
     res.json(uploadedFile);
+  }
+};
+
+// handling the file upload as an object or array
+export const UploaderPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    if (!req.files || Object.keys(req.files).length === 0) {
+      res.status(400).send("No file was selected!");
+      return;
+    }
+
+    const sampleFile = req.files.sampleFile;
+
+    if (Array.isArray(sampleFile)) {
+      // Handle multiple files (array of UploadedFile)
+      console.log("[CONTROLLER UPLOAD POST]: Multiple files uploaded");
+      sampleFile.forEach((file) => {
+        console.log("File name: ", file.name);
+      });
+
+      res.json(sampleFile);
+    } else {
+      // Handle single file (UploadedFile)
+      console.log("[CONTROLLER UPLOAD POST]: Single file uploaded");
+      console.log("File name: ", sampleFile.name);
+      res.json(sampleFile);
+    }
+  } catch (error: any) {
+    console.error("[CONTROLLER UPLOAD POST]: ", error);
+    next(error);
   }
 };
 
