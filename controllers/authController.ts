@@ -11,7 +11,6 @@ export const DisplayLoginForm = (req: Request, res: Response) => {
 };
 
 // hashing password
-
 export const CreateUserPost = async (
   req: Request,
   res: Response,

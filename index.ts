@@ -41,19 +41,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// random testing of m/ware
-// app.use((req, res, next) => {
-//   // console.log(req.user);
-//   console.log(req.session.cookie);
-//   next();
-// });
-
 // setting local variables
 // TODO: conditional check for undefined values
 app.use((req, res, next) => {
   res.locals.currentUserByName = req.user?.name;
 
-  console.log("[INDEX LOCALS VARIABLE USER]: ", res.locals.currentUserByName);
+  console.log(
+    "[INDEX LOCALS VARIABLE USER BY NAME]: ",
+    res.locals.currentUserByName
+  );
 
   next();
 });
