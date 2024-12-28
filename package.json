@@ -1,7 +1,6 @@
 {
   "name": "file-uploader",
   "version": "1.0.0",
-  "type": "module",
   "description": "a stripped down version of drive as a prsima project at t.o.p",
   "main": "index.js",
   "engines": {
@@ -12,7 +11,7 @@
   },
   "scripts": {
     "start": "npx tsx index.ts",
-    // "dev": "npx nodemon index.ts",
+    "dev": "npx nodemon index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
