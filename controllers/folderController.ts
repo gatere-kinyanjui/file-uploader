@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import * as db from "../db-services/queries";
 import { PrismaClient } from "@prisma/client";
+import { prismaClientInstance } from "../db-services/prismaClientInstance";
 
-const userOwnerClient = new PrismaClient();
-
-// creat folder
+// create folder
 export const FolderPost = async (
   req: Request,
   res: Response,
@@ -15,7 +14,7 @@ export const FolderPost = async (
 export const ValidateFolderOwnership = async (req: Request, res: Response) => {
   try {
     const ownerId = req.params.id;
-    const owner = await userOwnerClient.user.findUnique({
+    const owner = await prismaClientInstance.user.findUnique({
       where: {
         id: ownerId,
       },

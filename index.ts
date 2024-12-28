@@ -8,8 +8,7 @@ import expressSession from "express-session";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import { PrismaClient } from "@prisma/client";
 import fileUpload from "express-fileupload";
-
-const prisma = new PrismaClient();
+import { prismaClientInstance } from "./db-services/prismaClientInstance";
 
 const app = express();
 
@@ -29,7 +28,7 @@ app.use(
     secret: "a santa at nasa",
     resave: true,
     saveUninitialized: true,
-    store: new PrismaSessionStore(prisma, {
+    store: new PrismaSessionStore(prismaClientInstance, {
       checkPeriod: 2 * 60 * 1000, //ms
       dbRecordIdIsSessionId: true,
       dbRecordIdFunction: undefined,

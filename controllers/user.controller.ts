@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import * as db from "../db-services/queries";
 import { PrismaClient } from "@prisma/client";
-
-const userOwnerClient = new PrismaClient();
+import { prismaClientInstance } from "../db-services/prismaClientInstance";
 
 export const HomePageGet = (req: Request, res: Response) => {
   res.render("pages/index");
@@ -32,7 +31,7 @@ export const AllUsersGet = async (req: Request, res: Response) => {
 export const UserByIdGet = async (req: Request, res: Response) => {
   try {
     const ownerId = req.params.id;
-    const owner = await userOwnerClient.user.findUnique({
+    const owner = await prismaClientInstance.user.findUnique({
       where: {
         id: ownerId,
       },

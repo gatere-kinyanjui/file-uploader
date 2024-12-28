@@ -1,10 +1,9 @@
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient({ log: ["query"] });
+import { prismaClientInstance } from "./prismaClientInstance";
 
 export async function AllUsers() {
   try {
-    const allUsers = await prisma.user.findMany();
+    const allUsers = await prismaClientInstance.user.findMany();
     if (allUsers) {
     } else {
       console.log("No users were found.");
@@ -18,7 +17,7 @@ export async function AllUsers() {
 
 export async function AddUser(email: string, name: string, password: string) {
   try {
-    const newUser = await prisma.user.create({
+    const newUser = await prismaClientInstance.user.create({
       data: {
         email: email,
         name: name,
@@ -35,7 +34,7 @@ export async function AddUser(email: string, name: string, password: string) {
 
 export async function LoginUser(email: string, password: string) {
   try {
-    const userToLogin = await prisma.user.findUnique({
+    const userToLogin = await prismaClientInstance.user.findUnique({
       where: {
         email: email,
         password: password,
