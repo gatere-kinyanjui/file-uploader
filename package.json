@@ -1,14 +1,23 @@
 {
   "name": "file-uploader",
   "version": "1.0.0",
+  "type": "module",
   "description": "a stripped down version of drive as a prsima project at t.o.p",
   "main": "index.js",
+  "engines": {
+    "node": "22"
+  },
   "prisma": {
     "seed": "ts-node --transpile-only prisma/seed.ts"
   },
   "scripts": {
-    "dev": "npx nodemon index.ts",
+    "start": "npx tsx index.ts",
+    // "dev": "npx nodemon index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gatere-kinyanjui/file-uploader.git"
   },
   "author": "",
   "license": "ISC",
