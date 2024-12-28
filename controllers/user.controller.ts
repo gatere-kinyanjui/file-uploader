@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import * as db from "../db-services/queries";
-import { PrismaClient } from "@prisma/client";
 import { prismaClientInstance } from "../db-services/prismaClientInstance";
 
 export const HomePageGet = (req: Request, res: Response) => {

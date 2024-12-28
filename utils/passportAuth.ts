@@ -1,10 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
-// this export RESOLVES error TS2345: Argument of type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'
-// is not assignable to parameter of type 'IPrisma<"session">'.
-import { PrismaClient } from "@prisma/client"; // Add this import
-
 import bcrypt from "bcrypt";
 import { prismaClientInstance } from "../db-services/prismaClientInstance";
 

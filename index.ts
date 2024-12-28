@@ -6,7 +6,6 @@ import passport from "passport";
 import "./utils/passportAuth";
 import expressSession from "express-session";
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
-import { PrismaClient } from "@prisma/client";
 import fileUpload from "express-fileupload";
 import { prismaClientInstance } from "./db-services/prismaClientInstance";
 
