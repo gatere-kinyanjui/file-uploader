@@ -5,9 +5,11 @@ import {
   CreateUserPost,
   DisplayLoginForm,
   LogoutDelete,
-  ProtectedRouteGet,
+  UploaderGet,
+  UploaderPost,
 } from "../controllers/authController";
 import passport from "passport";
+import fileUpload from "express-fileupload";
 
 export const authRouter: Router = express.Router();
 
@@ -18,11 +20,20 @@ authRouter.post("/sign-up", CreateUserPost);
 authRouter.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/auth/protected-route",
+    successRedirect: "/auth/uploader",
     failureRedirect: "/auth",
   })
 );
 
-authRouter.get("/protected-route", ProtectedRouteGet);
+authRouter.get("/uploader", UploaderGet);
+authRouter.post(
+  "/uploader",
+  fileUpload({
+    createParentPath: true,
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  }),
+  UploaderPost
+);
 
 authRouter.post("/logout", LogoutDelete);

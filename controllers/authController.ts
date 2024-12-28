@@ -7,11 +7,10 @@ import bcrypt from "bcrypt";
 export const DisplayLoginForm = (req: Request, res: Response) => {
   res.render("pages/authentication");
 
-  console.log("Live from Auth Router");
+  console.log("Live from Auth Router", req.user);
 };
 
 // hashing password
-
 export const CreateUserPost = async (
   req: Request,
   res: Response,
@@ -43,11 +42,61 @@ export const LoginUserGet = async (req: Request, res: Response) => {
   res.redirect("/auth");
 };
 
-export const ProtectedRouteGet = async (req: Request, res: Response) => {
+export const UploaderGet = async (req: Request, res: Response) => {
   if (req.isAuthenticated()) {
-    res.render("pages/protected-route");
+    res.render("pages/uploader", { user: req.user });
   } else {
     res.render("pages/authentication");
+  }
+};
+
+// handling file upload as usual
+export const UploaderPostBasic = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.files || Object.keys(req.files).length === 0) {
+    res.status(400).send("No file was selected!");
+  } else {
+    const uploadedFile = req.files.sampleFile;
+    console.log("[CONTROLLER UPLOAD POST]: ", uploadedFile);
+
+    res.json(uploadedFile);
+  }
+};
+
+// handling the file upload as an object or array
+export const UploaderPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    if (!req.files || Object.keys(req.files).length === 0) {
+      res.status(400).send("No file was selected!");
+      return;
+    }
+
+    const sampleFile = req.files.sampleFile;
+
+    if (Array.isArray(sampleFile)) {
+      // Handle multiple files (array of UploadedFile)
+      console.log("[CONTROLLER UPLOAD POST]: Multiple files uploaded");
+      sampleFile.forEach((file) => {
+        console.log("File name: ", file.name);
+      });
+
+      res.json(sampleFile);
+    } else {
+      // Handle single file (UploadedFile)
+      console.log("[CONTROLLER UPLOAD POST]: Single file uploaded");
+      console.log("File name: ", sampleFile.name);
+      res.json(sampleFile);
+    }
+  } catch (error: any) {
+    console.error("[CONTROLLER UPLOAD POST]: ", error);
+    next(error);
   }
 };
 

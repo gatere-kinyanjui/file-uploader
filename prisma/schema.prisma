@@ -8,10 +8,13 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(nanoid())
-  email    String @unique
+  id       String    @id @default(nanoid())
+  email    String    @unique
   password String
   name     String
+  folder   Folder[]
+  file     File[]
+  session  Session[]
 }
 
 model Folder {
@@ -20,6 +23,21 @@ model Folder {
   size       BigInt
   uploadTime DateTime @default(now())
   ownerId    Int?
+  File       File[]
+  User       User?    @relation(fields: [userId], references: [id])
+  userId     String?
+}
+
+model File {
+  id         String   @id @default(nanoid())
+  name       String
+  size       Int
+  path       String
+  uploadedAt DateTime @default(now())
+  folderId   String
+  folder     Folder   @relation(fields: [folderId], references: [id])
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
 }
 
 model Session {
@@ -27,4 +45,6 @@ model Session {
   sid       String   @unique
   data      String // MediumText may be needed for MySql
   expiresAt DateTime
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }

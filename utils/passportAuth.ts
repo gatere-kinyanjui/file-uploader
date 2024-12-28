@@ -1,13 +1,8 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
-// this export RESOLVES error TS2345: Argument of type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'
-// is not assignable to parameter of type 'IPrisma<"session">'.
-import { PrismaClient } from "@prisma/client"; // Add this import
-
 import bcrypt from "bcrypt";
-
-const prisma = new PrismaClient();
+import { prismaClientInstance } from "../db-services/prismaClientInstance";
 
 const saltRounds = 10;
 
@@ -29,7 +24,7 @@ passport.use(
       done: DoneCallback
     ) => {
       try {
-        const userLoginResult = await prisma.user.findUnique({
+        const userLoginResult = await prismaClientInstance.user.findUnique({
           where: {
             email: userLoginEmail,
           },
@@ -79,7 +74,9 @@ passport.deserializeUser(async (id: string, done) => {
   console.log("Deserialising user: ", id);
 
   try {
-    const deserialisedUser = await prisma.user.findUnique({ where: { id } });
+    const deserialisedUser = await prismaClientInstance.user.findUnique({
+      where: { id },
+    });
     if (!deserialisedUser) {
       throw new Error("User to deserialise not found!");
     }
