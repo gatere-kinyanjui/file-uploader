@@ -58,4 +58,7 @@ app.use("/auth", authRouter);
 
 app.use(fileUpload());
 
-app.listen(5000, () => console.log("Uploader listening on port 5000!"));
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Uploader running on port ${PORT}`);
+});

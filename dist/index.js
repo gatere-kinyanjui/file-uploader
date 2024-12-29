@@ -48,4 +48,7 @@ app.use((req, res, next) => {
 app.use("/", userRouter_1.userRouter);
 app.use("/auth", authRouter_1.authRouter);
 app.use((0, express_fileupload_1.default)());
-app.listen(5000, () => console.log("Uploader listening on port 5000!"));
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+    console.log(`Uploader running on port ${PORT}`);
+});
